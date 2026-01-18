@@ -1,12 +1,12 @@
 import type { IconMap, SocialLink, Site } from '@/types'
 
 export const SITE: Site = {
-  title: 'astro-erudite',
+  title: import.meta.env.SITE_TITLE || "paris's blog",
   description:
-    'astro-erudite is a opinionated, unstyled blogging template—built with Astro, Tailwind, and shadcn/ui.',
-  href: 'https://astro-erudite.vercel.app',
-  author: 'jktrn',
-  locale: 'en-US',
+    import.meta.env.SITE_DESCRIPTION || 'A personal blog by paris',
+  href: import.meta.env.SITE_URL || 'http://localhost:4321',
+  author: import.meta.env.SITE_AUTHOR || 'paris',
+  locale: import.meta.env.SITE_LOCALE || 'en-US',
   featuredPostCount: 2,
   postsPerPage: 3,
 }
@@ -26,17 +26,18 @@ export const NAV_LINKS: SocialLink[] = [
   },
 ]
 
-export const SOCIAL_LINKS: SocialLink[] = [
-  {
-    href: 'https://github.com/jktrn',
+// Build social links dynamically from environment variables
+const socialLinksConfig: (SocialLink | false)[] = [
+  import.meta.env.GITHUB_URL && {
+    href: import.meta.env.GITHUB_URL,
     label: 'GitHub',
   },
-  {
-    href: 'https://twitter.com/enscry',
+  import.meta.env.TWITTER_URL && {
+    href: import.meta.env.TWITTER_URL,
     label: 'Twitter',
   },
-  {
-    href: 'mailto:jason@enscribe.dev',
+  import.meta.env.EMAIL && {
+    href: `mailto:${import.meta.env.EMAIL}`,
     label: 'Email',
   },
   {
@@ -44,6 +45,10 @@ export const SOCIAL_LINKS: SocialLink[] = [
     label: 'RSS',
   },
 ]
+
+export const SOCIAL_LINKS: SocialLink[] = socialLinksConfig.filter(
+  (link): link is SocialLink => Boolean(link)
+)
 
 export const ICON_MAP: IconMap = {
   Website: 'lucide:globe',
