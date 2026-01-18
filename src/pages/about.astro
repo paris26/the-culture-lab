@@ -1,12 +1,7 @@
 ---
 import Breadcrumbs from '@/components/Breadcrumbs.astro'
-import Link from '@/components/Link.astro'
 import PageHead from '@/components/PageHead.astro'
-import ProjectCard from '@/components/ProjectCard.astro'
 import Layout from '@/layouts/Layout.astro'
-import { getAllProjects } from '@/lib/data-utils'
-
-const projects = await getAllProjects()
 ---
 
 <Layout class="max-w-3xl">
@@ -15,32 +10,33 @@ const projects = await getAllProjects()
 
   <section>
     <div class="min-w-full">
-      <div class="prose mb-8">
-        <p class="mt-0">
-          astro-erudite is an opinionated, unstyled static blogging template
-          that prioritizes simplicity and performance, built with <Link
-            href="https://astro.build"
-            external
-            underline>Astro</Link
-          >, <Link href="https://tailwindcss.com" external underline
-            >Tailwind</Link
-          >, and <Link href="https://ui.shadcn.com" external underline
-            >shadcn/ui</Link
-          >. It provides a clean foundation for your content while being
-          extremely easy to customize.
+      <div class="prose">
+        <h2 class="mt-0">about me</h2>
+        <p>
+          hey, i'm paris. i'm one of those people who can't stick to just one thing —
+          give me a rabbit hole and i'll dive in headfirst. physics, coding, economics,
+          random wikipedia articles at 2am... you get the idea.
         </p>
         <p>
-          To learn more about the philosophy behind this template, check out the
-          following blog post: <Link
-            href="/blog/the-state-of-static-blogs"
-            underline>The State of Static Blogs in 2024</Link
-          >.
+          i started this blog because i wanted a place to put all the things i learn.
+          partly to share, partly so i don't forget everything. turns out writing stuff
+          down actually helps it stick.
         </p>
-      </div>
-
-      <h2 class="mb-4 text-2xl font-medium">Example Projects Listing</h2>
-      <div class="flex flex-col gap-4">
-        {projects.map((project) => <ProjectCard project={project} />)}
+        <h2>what you'll find here</h2>
+        <ul>
+          <li>tutorials and guides when i figure something out</li>
+          <li>projects i'm working on (or abandoning)</li>
+          <li>random thoughts that probably should've stayed in my notes app</li>
+          <li>stuff i find interesting and want to ramble about</li>
+        </ul>
+        <p>
+          if any of that sounds interesting, stick around. if not, no hard feelings.
+        </p>
+        <h2>get in touch</h2>
+        <p>
+          feel free to reach out if you want to chat about anything.
+          you can find me on github or twitter — links are in the footer.
+        </p>
       </div>
     </div>
   </section>
