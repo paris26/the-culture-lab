@@ -1,0 +1,157 @@
+---
+title: "Most Important Class in AI?"
+description: "Why the Value class from Andrej Karpathy's neural network lectures is foundational to understanding modern AI and deep learning."
+date: 2026-01-21
+tags:
+  - ai
+  - machine-learning
+  - python
+  - autograd
+authors:
+  - paris
+---
+
+# Most Important Class in AI?
+
+I guess most people in the field in one way or another either listened or followed some advice from a keynote or watched the lecture of Andrej Karpathy.
+
+I also did the same, but one thing that follows me from those lectures is the Value Class.
+
+But why? Well I found out that it is actually extremely foundational. It is profound because when I was trying to learn and implement it, it didn't seem so valuable.
+
+As time went on though I realized that some of the principles that exist in it are very important in many other places as well. For example the class and how it is built reminds me of those lectures from some Berkeley professors talking about black boxes and abstraction and using Lisp to show how code works. Graphs are almost everywhere and recursive traversal of a graph I would dare to say also (especially now!).
+
+Of course the principles exist throughout multiple other types of material around, but the funny thing is that my brain can't help but connect most of the things in coding with that class. That is how much it changed things for me. I have a hypothesis that it is indeed foundational in the sense that many other breakthroughs made AI possible and it is a compression of many other things but here it is, take a look (btw all credit to Andrej! he changed a lot of lives, maybe we should call him "Feynman of our time"):
+
+Here is my implementation, but I try to build it gradually and with comments in [autograd_yay](https://github.com/paris26/autograd_yay) (there is a link there for the Karpathy courses).
+
+```python
+# now we need to implement this function as
+# part of the class and also add labels and the operation from which each
+# node comes along with other operations
+
+import numpy as np
+
+
+class Value:
+
+    def __init__(self, data, _children = (), _op='', label='') :
+        self.data = data
+        # also add the gradient
+        self._prev = set(_children)
+        # this will be the function from above
+        self.backward = lambda:None
+        self._op = _op
+        self.label = label
+
+    def __add__(self, other):
+        out = Value( self.data + other.data, (self, other), '+')
+
+        def backward():
+            # be careful on the ( + ) or else you
+            # reset your grad in every calculation
+            self.grad += 1.0 * out.grad
+            other.grad += 1.0 * out.grad
+        out._backward = _backward
+
+        return out
+
+    ###
+    ### we also need to add all the other operations
+    ### For further explanations navigate to Karpathy's YouTube Videos
+    ###
+
+    def __mul__(self, other):
+        other = other if isinstance(other, Value) else Value(other)
+        out = self.data * other.data
+
+        def _backward():
+            self.grad += out.grad * other.data
+            other.grad += out.grad * self.data
+        out._backward = _backward
+
+        return out
+
+    def pow(self, other):
+        assert isinstance(other, (int, float))
+        out = Value(self.data**other, (self,), f'**{other}')
+
+        def _backward():
+            self.grad += (other.data * self.data**(other.data-1)) * out.grad
+
+        out._backward = _backward
+
+        return out
+
+    def tanh(self):
+        x = self.data
+        # the out is the e^2x - 1 / e^2x + 1
+        mid = ( ( np.exp(2*x) - 1 ) / ( ( np.exp(2*x) + 1 ) ) )
+        out = Value(mid, (self, ), 'tanh')
+
+        # the derivative for tanh can be obtained in two ways
+        # 1. from the coshx function
+        # tanh' = 1/coshx^2 = 4 * e^2x / (e^2x + 1)
+        # 2. from
+        # tanh' = 1 - tanh^2
+        #
+        # Karpathy uses the 2nd so we will go with that also
+        def _backward():
+            self.grad = out.grad * (1 - mid**2)
+        out._backward = _backward
+
+        return out
+
+    def relu(self):
+        out = np.max(0, self.data)
+
+        def backward_():
+            self.grad = (out.data > 0 ) * out.grad
+
+        out._backward = _backward
+
+        return out
+
+    def backward(self):
+        topo = []
+        visited = set()
+
+        def build_topo(v):
+            if v not in visited:
+                visited.add(v)
+                for child in self._prev:
+                    build_topo(child)
+                topo.append(v)
+        build.topo(self)
+
+        # go one variable at a time and apply the chain rule to get its gradient
+        self.grad = 1
+        # you start from the back and
+        # go to the previous layer having calculated the current gradient that will flow backwards
+        for v in reversed(topo):
+            v._backward()
+
+    # ADDITIONAL HELPER FUNCTIONS FOR OPERATIONS
+    # DEPENDING HOW DEEP YOU WANT TO GO . yay
+
+    def __neg__(self): # -self
+        return self * -1
+
+    def __radd__(self, other): # other + self
+        return self + other
+
+    def __sub__(self, other): # self - other
+        return self + (-other)
+
+    def __rsub__(self, other): # other - self
+        return other + (-self)
+
+    def __rmul__(self, other): # other * self
+        return self * other
+
+    def __truediv__(self, other): # self / other
+        return self * other**-1
+
+    def __rtruediv__(self, other): # other / self
+        return other * self**-1
+```
