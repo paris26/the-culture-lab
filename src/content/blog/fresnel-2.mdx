@@ -1,0 +1,85 @@
+---
+title: "Fresnel Reflection: Two Polarizations"
+description: "Notes on reflected and refracted amplitudes for two polarization cases, with the Fresnel relations and Brewster's angle."
+date: 2026-01-25
+tags:
+  - optics
+  - physics
+  - fresnel
+  - polarization
+authors:
+  - paris
+---
+
+# Fresnel Reflection: Two Polarizations
+
+![Fresnel setup with incident, reflected, and refracted beams.](/static/fresnel-2.png)
+
+We have two situations where a polarized beam is directed into a glass surface and one part is reflected while another part is refracted. In the first figure (a) the reflected is b and refracted is a, and equivalently for the polarization in the plane of the paper, whereas the first beam is polarized normal to the plane of the paper.
+
+We want to calculate how strong the reflection is in each situation.
+
+The principle upon which we will use is as follows. We already know that if we shine the beam at a right angle there will be no reflection. Now we also know that inside the glass there are currents generated. If there were no currents the beam would go through. The field of unit amplitude moves onto the glass through the dotted line, so the glass would generate a current of -1 towards that direction. Using this fact we can calculate the waves a and A.
+
+We would expect simply that in both cases the ratio of reflected and refracted would be the same as
+$$
+\frac{b}{a} = \frac{B}{A}
+$$
+but that is not the case because in the case of (figure b) the polarization is not all parallel to the direction so only the perpendicular part to B does work $(A\cos(i+r))$. So the correct expression is:
+$$
+\frac{b}{a}=\frac{B}{A\cos(i+r)}
+$$
+
+Okay now know that the field in the glass must produce oscillations of the charges, which generate a field of -1, polarized parallel to the incident beam, and moving in the direction of the dotted line. But we see from part (b) of the figure that only the component of the electric field in the glass that is normal to the dashed line has the right polarization to produce this field, whereas in (a) the full amplitude is effective, since the polarization of wave a is parallel to the polarization of the wave of amplitude -1. Therefore:
+$$
+\frac{A\cos(i+r)}{a} = \frac{-1}{-1}
+$$
+
+Dividing the first equation with the second we get:
+$$
+\frac{B}{b} = \frac{\cos(i+r)}{\cos(i-r)}
+$$
+
+a result that verifies Brewster's law for $(i+r)=90^\circ$.
+
+By assuming unit amplitudes for the respective incident waves, we have
+$$
+\frac{\lvert B\rvert^2}{1^2}, \quad \frac{\lvert b\rvert^2}{1^2}.
+$$
+
+Now we can perform a miracle and compute not just the ratio but each coefficient individually.
+
+We know from the conservation of energy that the energy of the refracted wave must be equal to the incident energy minus the energy of the reflected wave $1-\lvert B\rvert^2$, or $1-\lvert b\rvert^2$.
+
+Furthermore the energy which passes into the glass in the first figure and the second one is equal to the ratio of $\frac{\lvert A\rvert^2}{\lvert a\rvert^2}$.
+
+One might ask whether we really know how to compute the energy inside the glass, because, after all, there are energies of the motion of the atoms in addition to the energy in the electric field. But it is obvious that all the various contributions to the total energy will be proportional to the square of the amplitude of the electric field. Therefore we can write:
+$$
+\frac{1-\lvert B\rvert^2}{1-\lvert b\rvert^2}=\frac{\lvert A\rvert^2}{\lvert a\rvert^2}
+$$
+
+$$
+\frac{1-\lvert b\rvert^2 \frac{\cos^2(i+r)}{\cos^2(i-r)}}{1-\lvert b\rvert^2}=\frac{1}{\cos^2(i-r)}
+$$
+
+The equation contains only one unknown amplitude, $b$. Solving for $\lvert b\rvert^2$, we obtain:
+$$
+\lvert b\rvert^2 = \frac{\sin^2(i-r)}{\sin^2(i+r)}
+$$
+
+and also:
+$$
+\lvert B\rvert^2 = \frac{\tan^2(i-r)}{\tan^2(i+r)}
+$$
+
+Eventually it can be shown that:
+$$
+b = -\frac{\sin(i-r)}{\sin(i+r)}, \quad B = -\frac{\tan(i-r)}{\tan(i+r)}
+$$
+
+and for the limits as $i$ and $r$ go both to zero we have:
+$$
+B^2 = b^2 = \frac{(n-1)^2}{(n+1)^2}
+$$
+
+It is interesting to find out how much light is reflected at normal incidence from the surface of water, for example. For water, $n$ is $4/3$, so that the reflection coefficient is $(1/7)^2 \approx 2\%$. At normal incidence, only two percent of the light is reflected from the surface of water.
