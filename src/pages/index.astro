@@ -1,57 +1,180 @@
 ---
-import BlogCard from '@/components/BlogCard.astro'
 import Link from '@/components/Link.astro'
 import PageHead from '@/components/PageHead.astro'
-import { buttonVariants } from '@/components/ui/button'
 import { SITE } from '@/consts'
 import Layout from '@/layouts/Layout.astro'
 import { getRecentPosts } from '@/lib/data-utils'
+import { formatDate } from '@/lib/utils'
+import { Icon } from 'astro-icon/components'
 
-const blog = await getRecentPosts(SITE.featuredPostCount)
+const posts = await getRecentPosts(SITE.featuredPostCount)
+
+const researchAreas = [
+  {
+    title: 'Deep Reinforcement Learning',
+    description: 'Designing agents that learn optimal policies through interaction with complex environments.',
+    icon: 'lucide:brain',
+  },
+  {
+    title: 'Multi-Agent Systems',
+    description: 'Studying emergent cooperation and competition in populations of learning agents.',
+    icon: 'lucide:users',
+  },
+  {
+    title: 'Sim-to-Real Transfer',
+    description: 'Bridging the gap between simulated training and real-world deployment.',
+    icon: 'lucide:arrow-right-left',
+  },
+  {
+    title: 'Reward Shaping',
+    description: 'Crafting reward signals that align agent behavior with human intent.',
+    icon: 'lucide:target',
+  },
+]
 ---
 
-<Layout class="max-w-3xl">
+<Layout fullWidth>
   <PageHead slot="head" title="Home" />
-  <section class="rounded-lg border">
-    <div class="flex flex-col space-y-1.5 p-6">
-      <h3 class="text-3xl leading-none font-medium">hey, i'm paris</h3>
-      <p class="text-muted-foreground text-sm">
-        welcome to my corner of the internet
-      </p>
+
+  <!-- Hero Section -->
+  <section class="relative flex min-h-[90vh] items-center justify-center overflow-hidden px-6">
+    <!-- Decorative grid -->
+    <div class="pointer-events-none absolute inset-0 opacity-[0.03]"
+      style="background-image: linear-gradient(var(--foreground) 1px, transparent 1px), linear-gradient(90deg, var(--foreground) 1px, transparent 1px); background-size: 60px 60px;">
     </div>
-    <div class="p-6 pt-0">
-      <p class="text-muted-foreground mb-2 text-sm">
-        i'm a curious person who likes to learn about pretty much everything —
-        physics, coding, economics, and whatever else catches my attention.
-        this blog is where i document that journey.
+
+    <div class="relative z-10 mx-auto max-w-6xl text-center">
+      <!-- Lab tag -->
+      <div class="mb-8 inline-flex items-center gap-2 rounded-full border border-border/50 bg-muted/30 px-4 py-1.5 font-mono text-xs text-muted-foreground">
+        <span class="bg-foreground/50 inline-block size-1.5 rounded-full"></span>
+        University Research Lab
+      </div>
+
+      <!-- Main title -->
+      <h1 class="mb-6 font-mono text-[clamp(3rem,10vw,8rem)] leading-[0.9] font-bold tracking-tighter">
+        <span class="block">The</span>
+        <span class="text-foreground/70 block">Culture</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-muted-foreground mx-auto mb-12 max-w-xl text-lg leading-relaxed font-light">
+        Advancing the frontiers of artificial intelligence and
+        reinforcement learning through rigorous research and open collaboration.
       </p>
-      <p class="text-muted-foreground text-sm">
-        expect a mix of tutorials, random thoughts, things i'm building,
-        and stuff i find interesting. no promises on consistency,
-        but hopefully something here is useful to you.
-      </p>
+
+      <!-- CTA row -->
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <Link
+          href="/about"
+          class="bg-foreground text-background hover:bg-foreground/90 inline-flex items-center gap-2 rounded-full px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase transition-colors"
+        >
+          About the lab
+          <Icon name="lucide:arrow-right" class="size-3" />
+        </Link>
+        <Link
+          href="/blog"
+          class="text-foreground hover:bg-muted/50 inline-flex items-center gap-2 rounded-full border border-border/50 px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase transition-colors"
+        >
+          Read research
+        </Link>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2">
+      <div class="flex flex-col items-center gap-2 text-muted-foreground">
+        <span class="font-mono text-[10px] tracking-widest uppercase">Scroll</span>
+        <div class="h-8 w-px bg-gradient-to-b from-muted-foreground/50 to-transparent"></div>
+      </div>
     </div>
   </section>
-  <section class="flex flex-col gap-y-4">
-    <h2 class="text-2xl font-medium">Latest posts</h2>
-    <ul class="flex flex-col gap-y-4">
-      {
-        blog.map((post) => (
-          <li>
-            <BlogCard entry={post} />
-          </li>
-        ))
-      }
-    </ul>
-    <div class="flex justify-center">
-      <Link
-        href="/blog"
-        class={buttonVariants({ variant: 'ghost' }) + ' group'}
-      >
-        See all posts <span
-          class="ml-1.5 transition-transform group-hover:translate-x-1"
-          >&rarr;</span
+
+  <!-- Research Areas -->
+  <section class="px-6 py-32">
+    <div class="mx-auto max-w-6xl">
+      <div class="scroll-reveal mb-16 flex items-end justify-between">
+        <div>
+          <span class="text-muted-foreground mb-3 block font-mono text-xs tracking-widest uppercase">What we do</span>
+          <h2 class="text-4xl font-bold tracking-tighter sm:text-5xl">Research Areas</h2>
+        </div>
+        <div class="divider-line hidden flex-1 mx-8 sm:block"></div>
+        <span class="text-muted-foreground hidden font-mono text-xs sm:block">0{researchAreas.length} areas</span>
+      </div>
+
+      <div class="stagger-children grid gap-px overflow-hidden rounded-xl border border-border/50 bg-border/50 sm:grid-cols-2">
+        {researchAreas.map((area, i) => (
+          <div class="bg-background group flex flex-col gap-4 p-8 transition-colors hover:bg-muted/30">
+            <div class="flex items-center justify-between">
+              <Icon name={area.icon} class="text-muted-foreground size-5" />
+              <span class="text-muted-foreground/40 font-mono text-xs">0{i + 1}</span>
+            </div>
+            <h3 class="text-lg font-medium">{area.title}</h3>
+            <p class="text-muted-foreground text-sm leading-relaxed">{area.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Posts -->
+  <section class="border-t border-border/50 px-6 py-32">
+    <div class="mx-auto max-w-6xl">
+      <div class="scroll-reveal mb-16 flex items-end justify-between">
+        <div>
+          <span class="text-muted-foreground mb-3 block font-mono text-xs tracking-widest uppercase">Latest</span>
+          <h2 class="text-4xl font-bold tracking-tighter sm:text-5xl">Research Feed</h2>
+        </div>
+        <Link
+          href="/blog"
+          class="text-muted-foreground hover:text-foreground flex items-center gap-2 font-mono text-xs tracking-wider uppercase transition-colors"
         >
+          View all
+          <Icon name="lucide:arrow-right" class="size-3" />
+        </Link>
+      </div>
+
+      <div class="stagger-children flex flex-col">
+        {posts.map((post, i) => (
+          <Link
+            href={`/blog/${post.id}`}
+            class="group flex flex-col gap-2 border-t border-border/50 py-6 transition-colors sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div class="flex flex-col gap-1">
+              <h3 class="text-foreground text-lg font-medium group-hover:text-foreground/70 transition-colors duration-300">
+                {post.data.title}
+              </h3>
+              <p class="text-muted-foreground text-sm line-clamp-1">{post.data.description}</p>
+            </div>
+            <div class="flex shrink-0 items-center gap-4">
+              {post.data.tags && post.data.tags.slice(0, 2).map((tag) => (
+                <span class="text-muted-foreground/60 font-mono text-xs">#{tag}</span>
+              ))}
+              <span class="text-muted-foreground font-mono text-xs">{formatDate(post.data.date)}</span>
+              <Icon name="lucide:arrow-up-right" class="text-muted-foreground/40 size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Join CTA -->
+  <section class="border-t border-border/50 px-6 py-32">
+    <div class="scroll-reveal mx-auto max-w-3xl text-center">
+      <span class="text-muted-foreground mb-4 block font-mono text-xs tracking-widest uppercase">Get involved</span>
+      <h2 class="mb-6 text-4xl font-bold tracking-tighter sm:text-5xl">
+        Interested in our work?
+      </h2>
+      <p class="text-muted-foreground mx-auto mb-10 max-w-lg text-lg leading-relaxed font-light">
+        We're always looking for curious minds — whether you're a student,
+        researcher, or just passionate about AI and reinforcement learning.
+      </p>
+      <Link
+        href="/about"
+        class="bg-foreground text-background hover:bg-foreground/90 inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-mono text-xs font-bold tracking-wider uppercase transition-colors"
+      >
+        Learn more about us
+        <Icon name="lucide:arrow-right" class="size-3" />
       </Link>
     </div>
   </section>

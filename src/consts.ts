@@ -1,24 +1,21 @@
 import type { IconMap, SocialLink, Site } from '@/types'
 
 export const SITE: Site = {
-  title: import.meta.env.SITE_TITLE || "paris's blog",
+  title: import.meta.env.SITE_TITLE || 'The Culture',
   description:
-    import.meta.env.SITE_DESCRIPTION || 'A personal blog by paris',
-  href: import.meta.env.SITE_URL || 'http://localhost:4321',
-  author: import.meta.env.SITE_AUTHOR || 'paris',
+    import.meta.env.SITE_DESCRIPTION ||
+    'Artificial Intelligence & Reinforcement Learning Laboratory',
+  href: import.meta.env.SITE_URL || 'http://localhost:1234',
+  author: import.meta.env.SITE_AUTHOR || 'The Culture',
   locale: import.meta.env.SITE_LOCALE || 'en-US',
-  featuredPostCount: 2,
-  postsPerPage: 3,
+  featuredPostCount: 3,
+  postsPerPage: 10,
 }
 
 export const NAV_LINKS: SocialLink[] = [
   {
     href: '/blog',
-    label: 'blog',
-  },
-  {
-    href: '/authors',
-    label: 'authors',
+    label: 'research',
   },
   {
     href: '/about',

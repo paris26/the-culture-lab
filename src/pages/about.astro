@@ -1,42 +1,158 @@
 ---
-import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import Link from '@/components/Link.astro'
 import PageHead from '@/components/PageHead.astro'
 import Layout from '@/layouts/Layout.astro'
+import { Icon } from 'astro-icon/components'
+
+const team = [
+  { name: 'Dr. Sarah Chen', role: 'Lab Director', focus: 'Multi-agent RL' },
+  { name: 'Prof. Marco Silva', role: 'Co-Director', focus: 'Policy optimization' },
+  { name: 'Aisha Patel', role: 'PhD Researcher', focus: 'Sim-to-real transfer' },
+  { name: 'James Okonkwo', role: 'PhD Researcher', focus: 'Reward shaping' },
+  { name: 'Yuki Tanaka', role: 'MSc Researcher', focus: 'Curriculum learning' },
+  { name: 'Lena Müller', role: 'MSc Researcher', focus: 'Safe exploration' },
+]
+
+const values = [
+  {
+    title: 'Open Research',
+    description: 'All our papers, code, and datasets are publicly available. Knowledge grows when shared.',
+    icon: 'lucide:book-open',
+  },
+  {
+    title: 'Rigorous Methods',
+    description: 'We prioritize reproducibility and statistical rigor over flashy benchmarks.',
+    icon: 'lucide:flask-conical',
+  },
+  {
+    title: 'Real-World Impact',
+    description: 'Our research targets problems that matter — from robotics to resource allocation.',
+    icon: 'lucide:globe',
+  },
+]
 ---
 
-<Layout class="max-w-3xl">
+<Layout fullWidth>
   <PageHead slot="head" title="About" />
-  <Breadcrumbs items={[{ label: 'About', icon: 'lucide:info' }]} />
 
-  <section>
-    <div class="min-w-full">
-      <div class="prose">
-        <h2 class="mt-0">about me</h2>
-        <p>
-          hey, i'm paris. i'm one of those people who can't stick to just one thing —
-          give me a rabbit hole and i'll dive in headfirst. physics, coding, economics,
-          random wikipedia articles at 2am... you get the idea.
+  <!-- Hero -->
+  <section class="relative px-6 pt-24 pb-32">
+    <div class="mx-auto max-w-6xl">
+      <div class="max-w-3xl">
+        <span class="text-muted-foreground mb-4 block font-mono text-xs tracking-widest uppercase">About</span>
+        <h1 class="mb-8 text-5xl font-bold tracking-tighter sm:text-7xl">
+          Building intelligent agents<span class="text-muted-foreground">.</span>
+        </h1>
+        <p class="text-muted-foreground max-w-2xl text-xl leading-relaxed font-light">
+          The Culture is a university research group dedicated to advancing
+          artificial intelligence through reinforcement learning. We study how
+          agents can learn to make decisions, cooperate, and adapt in complex
+          environments.
         </p>
-        <p>
-          i started this blog because i wanted a place to put all the things i learn.
-          partly to share, partly so i don't forget everything. turns out writing stuff
-          down actually helps it stick.
-        </p>
-        <h2>what you'll find here</h2>
-        <ul>
-          <li>tutorials and guides when i figure something out</li>
-          <li>projects i'm working on (or abandoning)</li>
-          <li>random thoughts that probably should've stayed in my notes app</li>
-          <li>stuff i find interesting and want to ramble about</li>
-        </ul>
-        <p>
-          if any of that sounds interesting, stick around. if not, no hard feelings.
-        </p>
-        <h2>get in touch</h2>
-        <p>
-          feel free to reach out if you want to chat about anything.
-          you can find me on github or twitter — links are in the footer.
-        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <section class="border-y border-border/50 px-6">
+    <div class="stagger-children mx-auto grid max-w-6xl grid-cols-2 sm:grid-cols-4">
+      {[
+        { value: '12+', label: 'Researchers' },
+        { value: '30+', label: 'Publications' },
+        { value: '8', label: 'Active projects' },
+        { value: '2021', label: 'Established' },
+      ].map((stat, i) => (
+        <div class={`flex flex-col gap-1 py-8 px-4 ${i > 0 ? 'border-l border-border/50' : ''}`}>
+          <span class="text-muted-foreground font-mono text-2xl font-bold">{stat.value}</span>
+          <span class="text-muted-foreground font-mono text-xs tracking-wider uppercase">{stat.label}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="px-6 py-32">
+    <div class="mx-auto max-w-6xl">
+      <div class="scroll-reveal mb-16">
+        <span class="text-muted-foreground mb-3 block font-mono text-xs tracking-widest uppercase">Our approach</span>
+        <h2 class="text-4xl font-bold tracking-tighter sm:text-5xl">What drives us</h2>
+      </div>
+
+      <div class="stagger-children grid gap-12 sm:grid-cols-3">
+        {values.map((value) => (
+          <div class="flex flex-col gap-4">
+            <div class="text-muted-foreground flex size-10 items-center justify-center rounded-lg border border-border/50 bg-muted/30">
+              <Icon name={value.icon} class="size-5" />
+            </div>
+            <h3 class="text-lg font-medium">{value.title}</h3>
+            <p class="text-muted-foreground text-sm leading-relaxed">{value.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="border-t border-border/50 px-6 py-32">
+    <div class="mx-auto max-w-6xl">
+      <div class="scroll-reveal mb-16 flex items-end justify-between">
+        <div>
+          <span class="text-muted-foreground mb-3 block font-mono text-xs tracking-widest uppercase">People</span>
+          <h2 class="text-4xl font-bold tracking-tighter sm:text-5xl">The team</h2>
+        </div>
+        <div class="divider-line hidden flex-1 mx-8 sm:block"></div>
+        <span class="text-muted-foreground hidden font-mono text-xs sm:block">0{team.length} members</span>
+      </div>
+
+      <div class="stagger-children grid gap-px overflow-hidden rounded-xl border border-border/50 bg-border/50 sm:grid-cols-2 lg:grid-cols-3">
+        {team.map((member) => (
+          <div class="bg-background group flex flex-col gap-3 p-8 transition-colors hover:bg-muted/30">
+            <div class="bg-muted/50 flex size-12 items-center justify-center rounded-full font-mono text-sm font-medium">
+              {member.name.split(' ').map(n => n[0]).join('')}
+            </div>
+            <div>
+              <h3 class="font-medium">{member.name}</h3>
+              <p class="text-muted-foreground font-mono text-xs">{member.role}</p>
+            </div>
+            <p class="text-muted-foreground text-sm">{member.focus}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="border-t border-border/50 px-6 py-32">
+    <div class="scroll-reveal mx-auto max-w-6xl">
+      <div class="rounded-xl border border-border/50 bg-muted/10 p-12 sm:p-16">
+        <div class="mx-auto max-w-2xl text-center">
+          <span class="text-muted-foreground mb-4 block font-mono text-xs tracking-widest uppercase">Contact</span>
+          <h2 class="mb-6 text-3xl font-bold tracking-tighter sm:text-4xl">
+            Want to collaborate?
+          </h2>
+          <p class="text-muted-foreground mb-8 text-base leading-relaxed">
+            We welcome collaborations with other research groups, industry partners,
+            and prospective students. If you're interested in joining or working with
+            The Culture, we'd love to hear from you.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <Link
+              href="mailto:the-culture@university.edu"
+              class="bg-foreground text-background hover:bg-foreground/90 inline-flex items-center gap-2 rounded-full px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase transition-colors"
+            >
+              <Icon name="lucide:mail" class="size-3" />
+              Get in touch
+            </Link>
+            <Link
+              href="#"
+              class="text-foreground hover:bg-muted/50 inline-flex items-center gap-2 rounded-full border border-border/50 px-6 py-3 font-mono text-xs font-medium tracking-wider uppercase transition-colors"
+              external
+            >
+              <Icon name="lucide:github" class="size-3" />
+              GitHub
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   </section>
