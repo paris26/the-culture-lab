@@ -5,7 +5,7 @@ export const SITE: Site = {
   description:
     import.meta.env.SITE_DESCRIPTION ||
     'Artificial Intelligence & Reinforcement Learning Laboratory',
-  href: import.meta.env.SITE_URL || 'http://localhost:1234',
+  href: import.meta.env.SITE_URL || 'https://the-culture-lab.vercel.app',
   author: import.meta.env.SITE_AUTHOR || 'The Culture',
   locale: import.meta.env.SITE_LOCALE || 'en-US',
   featuredPostCount: 3,
